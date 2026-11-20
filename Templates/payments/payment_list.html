@@ -1,0 +1,109 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Payments | BillBuddy{% endblock %}
+{% block heading %}Payments{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="welcome-row">
+    <div>
+        <h2>Payment Management</h2>
+        <p>Track payments received from your customers.</p>
+    </div>
+
+    <a href="{% url 'record_payment' %}" class="primary-button">
+        + Record Payment
+    </a>
+</div>
+
+<!-- Total Payments Card -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <p>Total Payments Received</p>
+        <h2>₹{{ total_received|floatformat:2 }}</h2>
+        <span>Total amount received from customers</span>
+    </div>
+</div>
+
+<!-- Payment History -->
+<div class="content-card">
+
+    <div class="section-header">
+        <div>
+            <h2>Payment History</h2>
+            <p>View all recorded customer payments.</p>
+        </div>
+
+        <a href="{% url 'record_payment' %}" class="text-link">
+            + Add Payment
+        </a>
+    </div>
+
+    {% if payment_summaries %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Invoice</th>
+                    <th>Customer</th>
+                    <th>Payment Date</th>
+                    <th>Method</th>
+                    <th>Amount Received</th>
+                    <th>Remaining Balance</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for summary in payment_summaries %}
+                <tr>
+                    <td>
+                        {{ summary.payment.invoice.invoice_number }}
+                    </td>
+
+                    <td>
+                        {{ summary.payment.invoice.customer.name }}
+                    </td>
+
+                    <td>
+                        {{ summary.payment.payment_date|date:"d M Y" }}
+                    </td>
+
+                    <td>
+                        {{ summary.payment.payment_method }}
+                    </td>
+
+                    <td>
+                        ₹{{ summary.payment.amount|floatformat:2 }}
+                    </td>
+
+                    <td>
+                        ₹{{ summary.balance|floatformat:2 }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">💳</div>
+
+        <h3>No payments recorded yet</h3>
+
+        <p>
+            Record your first payment to see it in this table.
+        </p>
+
+        <a href="{% url 'record_payment' %}" class="primary-button">
+            + Record Your First Payment
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

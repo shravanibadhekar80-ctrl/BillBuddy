@@ -1,0 +1,52 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Add Customer | BillBuddy{% endblock %}
+{% block heading %}Add Customer{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <h2>Add New Customer</h2>
+    <p>Enter your customer's details below.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <p>
+            <label for="name">Customer Name *</label>
+            <input id="name" type="text" name="name"
+                   maxlength="150" required>
+        </p>
+
+        <p>
+            <label for="business_name">Business Name</label>
+            <input id="business_name" type="text"
+                   name="business_name" maxlength="150">
+        </p>
+
+        <p>
+            <label for="phone">Phone Number *</label>
+            <input id="phone" type="tel" name="phone"
+                   maxlength="15" required>
+        </p>
+
+        <p>
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email">
+        </p>
+
+        <p>
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="3"></textarea>
+        </p>
+
+        <button type="submit" class="primary-button">
+            Save Customer
+        </button>
+
+        <a href="{% url 'customer_list' %}" class="text-link">
+            Cancel
+        </a>
+    </form>
+</div>
+{% endblock %}

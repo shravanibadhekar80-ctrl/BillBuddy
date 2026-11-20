@@ -1,0 +1,91 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Create Invoice | BillBuddy{% endblock %}
+{% block heading %}Create Invoice{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <h2>New Invoice</h2>
+    <p>Enter the customer and billing details.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <p>
+            <label for="invoice_number">Invoice Number *</label>
+            <input id="invoice_number" name="invoice_number"
+                   placeholder="INV-1001" maxlength="20" required>
+        </p>
+
+        <p>
+            <label for="customer">Select Customer *</label>
+            <select id="customer" name="customer" required>
+                <option value="">Choose a customer</option>
+                {% for customer in customers %}
+                <option value="{{ customer.id }}">
+                    {{ customer.name }}{% if customer.business_name %} — {{ customer.business_name }}{% endif %}
+                </option>
+                {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            <label for="invoice_date">Invoice Date *</label>
+            <input id="invoice_date" type="date" name="invoice_date"
+                   value="{{ today }}" required>
+        </p>
+
+        <p>
+            <label for="due_date">Due Date *</label>
+            <input id="due_date" type="date" name="due_date"
+                   value="{{ today }}" required>
+        </p>
+
+        <p>
+            <label for="item_name">Item or Service *</label>
+            <input id="item_name" name="item_name"
+                   placeholder="e.g. Computer accessories"
+                   maxlength="200" required>
+        </p>
+
+        <p>
+            <label for="quantity">Quantity *</label>
+            <input id="quantity" type="number" name="quantity"
+                   min="1" value="1" required>
+        </p>
+
+        <p>
+            <label for="unit_price">Price per Unit (₹) *</label>
+            <input id="unit_price" type="number" name="unit_price"
+                   min="0" step="0.01" value="0.00" required>
+        </p>
+
+        <p>
+            <strong>Total: ₹<span id="total">0.00</span></strong>
+        </p>
+
+        <button type="submit" class="primary-button">
+            Save Invoice
+        </button>
+
+        <a href="{% url 'invoice_list' %}" class="text-link">Cancel</a>
+    </form>
+</div>
+
+<script>
+    const quantityInput = document.getElementById("quantity");
+    const priceInput = document.getElementById("unit_price");
+    const totalDisplay = document.getElementById("total");
+
+    function calculateTotal() {
+        const quantity = Math.max(0, Number(quantityInput.value) || 0);
+        const price = Math.max(0, Number(priceInput.value) || 0);
+        totalDisplay.textContent = (quantity * price).toFixed(2);
+    }
+
+    quantityInput.addEventListener("input", calculateTotal);
+    priceInput.addEventListener("input", calculateTotal);
+    calculateTotal();
+</script>
+{% endblock %}

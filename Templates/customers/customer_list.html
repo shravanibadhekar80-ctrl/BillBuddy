@@ -1,0 +1,56 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Customers | BillBuddy{% endblock %}
+{% block heading %}Customers{% endblock %}
+
+{% block content %}
+<div class="welcome-row">
+    <div>
+        <h2>Customer Management</h2>
+        <p>Manage your business customers in one place.</p>
+    </div>
+    <a href="{% url 'add_customer' %}" class="primary-button">
+        + Add Customer
+    </a>
+</div>
+
+<div class="content-card">
+    <form method="get" class="search-form">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search customers by name"
+            value="{{ query }}"
+        >
+        <button type="submit" class="primary-button">Search</button>
+    </form>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Business</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.business_name|default:"—" }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.email|default:"—" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No customers found. Add your first customer!</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

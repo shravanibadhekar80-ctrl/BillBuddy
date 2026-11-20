@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BillBuddy</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="login-page">
+    <div class="login-card">
+        <div class="brand login-brand">
+            <span class="brand-icon">B</span>
+            <span>BillBuddy</span>
+        </div>
+
+        <h1>Welcome back</h1>
+        <p class="login-description">
+            Sign in to manage your business billing.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text"
+                   placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password"
+                   placeholder="Enter your password" required>
+
+            {% if error %}
+                <p class="form-error">{{ error }}</p>
+            {% endif %}
+
+            <button type="submit" class="primary-button login-button">
+                Sign In
+            </button>
+        </form>
+
+        <p class="login-footer">Smart billing, made simple.</p>
+    </div>
+</body>
+</html>
